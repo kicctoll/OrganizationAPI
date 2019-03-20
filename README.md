@@ -25,10 +25,12 @@ dotnet restore
 Inside the newly created project, you can run some built-in commands:
 
 ```bash
+dotnet ef migrations add Initial -p src/Web/Web.csproj
+dotnet ef database update -p src/Web/Web.csproj
 dotnet build
 ```
 
-In order to build the Web project and all it's dependencies.
+In order to create migration, apply it and build the Web project and all it's dependencies.
 
 ```bash
 dotnet run -p src/Web/Web.csproj

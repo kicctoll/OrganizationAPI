@@ -1,4 +1,7 @@
-﻿using Infrastructure.Data;
+﻿using AutoMapper;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Web.Utilities;
 
 namespace Web
 {
@@ -27,6 +31,14 @@ namespace Web
                     Configuration.GetConnectionString("DefaultConnection"),
                     sqlServerOptions => sqlServerOptions.MigrationsAssembly("Web"));
             });
+
+            services.AddScoped<DbContext, ApplicationContext>();
+
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<ICountryService, CountryService>();
+
+            AddMapping(services);
 
             services
                 .AddMvc()
@@ -53,6 +65,18 @@ namespace Web
             app.UseStaticFiles();
 
             app.UseMvc();
+        }
+
+        private void AddMapping(IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(conf =>
+            {
+                conf.AddProfile<MappingProfile>();
+            });
+
+            var mapper = mapperConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
         }
     }
 }
