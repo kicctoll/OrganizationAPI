@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ApplicationCore.Entities;
 
 namespace Web.ViewModels
 {
-    public class BusinessViewModel : BaseViewModel
+    public class BusinessViewModel : BaseChildViewModel<Country>
     {
     }
 }

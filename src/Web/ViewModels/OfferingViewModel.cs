@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ApplicationCore.Entities;
 
 namespace Web.ViewModels
 {
-    public class OfferingViewModel : BaseViewModel
+    public class OfferingViewModel : BaseChildViewModel<Family>
     {
     }
 }
