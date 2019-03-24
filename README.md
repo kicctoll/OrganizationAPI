@@ -1,6 +1,6 @@
-# CSC Test
+# Organization API
 
-Test task for CSC
+This is a project that built on DDD approach and represent managing organizations.
 
 ## Getting Started
 
@@ -15,8 +15,8 @@ In order to run this project, you'll need to have .NET Core 2.2 or higher on you
 First of all you'll need to complete following commands:
 
 ```bash
-git clone http://github.com/Kicctoll/CSC_Test.git
-cd CSC_Test
+git clone http://github.com/Kicctoll/OrganizationAPI.git
+cd OrganizationAPI
 dotnet restore
 ```
 

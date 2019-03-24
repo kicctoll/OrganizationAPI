@@ -98,7 +98,7 @@ namespace Web
             });
 
             app.UseMiddleware<LoggingMiddleware>();
-            //app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseHttpsRedirection();
 
