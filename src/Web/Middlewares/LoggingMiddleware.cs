@@ -66,7 +66,14 @@ namespace Web.Middlewares
         {
             var method = request.Method;
             var uri = $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString.Value}";
-            dynamic body = JsonConvert.DeserializeObject(await new StreamReader(request.Body).ReadToEndAsync());
+
+            var content = await new StreamReader(request.Body).ReadToEndAsync();
+            dynamic body = new { };
+
+            if (!string.IsNullOrEmpty(content))
+            {
+                body = JsonConvert.DeserializeObject(content);
+            }
 
             return new LoggingRequest(method, uri, body);
         }
@@ -74,7 +81,21 @@ namespace Web.Middlewares
         private async Task<LoggingResponse> CreateResponseLogObject(HttpResponse response)
         {
             var statusCode = (short)response.StatusCode;
-            dynamic body = JsonConvert.DeserializeObject(await new StreamReader(response.Body).ReadToEndAsync());
+
+            var content = await new StreamReader(response.Body).ReadToEndAsync();
+            dynamic body = new { };
+
+            if (!string.IsNullOrEmpty(content))
+            {
+                if (content[0] == '<')
+                {
+                    body = new { Content = content };
+                }
+                else
+                {
+                    body = JsonConvert.DeserializeObject(content);
+                }
+            };
 
             return new LoggingResponse(statusCode, body);
         }

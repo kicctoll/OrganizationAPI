@@ -26,7 +26,6 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrganizationViewModel>>> GetAllAsync()
         {
-            throw new System.Exception("It's my exception!");
             var organizations = await _service.GetAllAsync();
 
             return _mapper

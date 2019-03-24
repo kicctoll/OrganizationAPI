@@ -6,6 +6,8 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Logging;
+using Infrastructure.Utilities;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,8 +42,6 @@ namespace Web
                     sqlServerOptions => sqlServerOptions.MigrationsAssembly("Web"));
             });
 
-            
-
             services.AddSingleton(p => new FileJsonLogger(
                 Configuration["Logging:Paths:Folder"],
                 Configuration["Logging:Paths:Info"],
@@ -49,16 +49,19 @@ namespace Web
             ));
 
             services.AddScoped<DbContext, ApplicationContext>();
-
+            
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IBusinessService, BusinessService>();
             services.AddTransient<IFamilyService, FamilyService>();
             services.AddTransient<IOfferingService, OfferingService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
+            services.AddTransient<FacebookAuthenticationService>();
 
             AddMapping(services);
+            AddAuthentication(services);
 
             services
                 .AddMvc()
@@ -95,13 +98,14 @@ namespace Web
             });
 
             app.UseMiddleware<LoggingMiddleware>();
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            //app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseHttpsRedirection();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseMvc();
         }
 
@@ -117,25 +121,33 @@ namespace Web
             services.AddSingleton(mapper);
         }
 
-        //private void AddAuthentication(IServiceCollection services)
-        //{
-        //    //var tokenValidationParameters = new TokenValidationParameters
-        //    //{
-        //    //    ValidateIssuer = true,
-        //    //    ValidIssuer = 
-        //    //}
+        private void AddAuthentication(IServiceCollection services)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = JwtBearerDefaultOptions.ISSUER,
 
-        //    services
-        //        .AddAuthentication(options =>
-        //        {
-        //            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        //            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        //        })
-        //        .AddJwtBearer(options =>
-        //        {
-        //            options.RequireHttpsMetadata = true;
+                ValidateAudience = true,
+                ValidAudience = JwtBearerDefaultOptions.AUDIENCE,
 
-        //        });
-        //}
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = JwtBearerDefaultOptions.GetSecurityKey(),
+
+                ValidateLifetime = true,
+            };
+
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = true;
+                    options.TokenValidationParameters = tokenValidationParameters;
+                });
+        }
     }
 }

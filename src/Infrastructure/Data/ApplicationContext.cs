@@ -22,6 +22,8 @@ namespace Infrastructure.Data
 
         public DbSet<Department> Departments { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(ConfigureUser);
