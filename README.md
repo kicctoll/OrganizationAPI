@@ -1,6 +1,6 @@
 # Organization API
 
-This is a project that built on DDD approach and represent managing organizations.
+This is a project that built on DDD approach and represent management of organizations.
 
 ## Getting Started
 
