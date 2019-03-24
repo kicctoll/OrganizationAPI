@@ -5,15 +5,19 @@ using AutoMapper;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
+using Infrastructure.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Web.Utilities;
 using Swashbuckle.AspNetCore.Swagger;
+using Web.Middlewares;
+using Web.Utilities;
 
 namespace Web
 {
@@ -35,6 +39,14 @@ namespace Web
                     Configuration.GetConnectionString("DefaultConnection"),
                     sqlServerOptions => sqlServerOptions.MigrationsAssembly("Web"));
             });
+
+            
+
+            services.AddSingleton(p => new FileJsonLogger(
+                Configuration["Logging:Paths:Folder"],
+                Configuration["Logging:Paths:Info"],
+                Configuration["Logging:Paths:Errors"]
+            ));
 
             services.AddScoped<DbContext, ApplicationContext>();
 
@@ -82,6 +94,9 @@ namespace Web
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            app.UseMiddleware<LoggingMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseDefaultFiles();
@@ -101,5 +116,26 @@ namespace Web
 
             services.AddSingleton(mapper);
         }
+
+        //private void AddAuthentication(IServiceCollection services)
+        //{
+        //    //var tokenValidationParameters = new TokenValidationParameters
+        //    //{
+        //    //    ValidateIssuer = true,
+        //    //    ValidIssuer = 
+        //    //}
+
+        //    services
+        //        .AddAuthentication(options =>
+        //        {
+        //            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        //            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        //        })
+        //        .AddJwtBearer(options =>
+        //        {
+        //            options.RequireHttpsMetadata = true;
+
+        //        });
+        //}
     }
 }
