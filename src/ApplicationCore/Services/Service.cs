@@ -54,7 +54,7 @@ namespace ApplicationCore.Services
             }
             else
             {
-                throw new Exception("Entity type {typeof(T).Name} with id {id} doesn't exist!");
+                throw new Exception($"Entity type {typeof(T).Name} with id {id} doesn't exist!");
             }
         }
     }
