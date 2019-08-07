@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-In order to run this project, you'll need to have .NET Core 2.2 (.NET Core SDK that is suitable with VS 2017) on your local development machine.
+In order to run this project, you'll need to have .NET Core 2.2 or higher on your local development machine.
 
 ### Installing
 
