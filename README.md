@@ -15,7 +15,7 @@ In order to run this project, you'll need to have .NET Core 2.2 (.NET Core SDK t
 First of all you'll need to complete following commands:
 
 ```bash
-git clone http://github.com/Kicctoll/OrganizationAPI.git
+git clone https://github.com/Kicctoll/OrganizationAPI.git
 cd OrganizationAPI
 dotnet restore
 ```
