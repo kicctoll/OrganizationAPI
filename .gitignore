@@ -6,6 +6,7 @@
 bin
 obj
 Migrations
+./src/Web/Logs/Information.json
 
 #SQLite database file
 *.db
