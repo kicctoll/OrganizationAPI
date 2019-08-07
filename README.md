@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-In order to run this project, you'll need to have .NET Core 2.2 or higher on your local development machine.
+In order to run this project, you'll need to have .NET Core 2.2 (.NET Core SDK that is suitable with VS 2017) on your local development machine.
 
 ### Installing
 
@@ -36,7 +36,7 @@ In order to create migration, apply it and build the Web project and all it's de
 dotnet run -p src/Web/Web.csproj
 ```
 
-In order to run the web server. Open [http://localhost:5000](http://localhost:3000) or [https://localhost:5001](https://localhost:5001) to view it in the browser.
+In order to run the web server. Open [http://localhost:5000/swagger](http://localhost:5000/swagger) or [https://localhost:5001/swagger](https://localhost:5001/swagger) to view it in the browser.
 
 ## Running the tests
 
