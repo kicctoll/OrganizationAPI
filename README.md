@@ -36,7 +36,7 @@ In order to create migration, apply it and build the Web project and all it's de
 dotnet run -p src/Web/Web.csproj
 ```
 
-In order to run the web server. Open [http://localhost:5000/swagger](http://localhost:5000/swagger) or [https://localhost:5001/swagger](https://localhost:5001/swagger) to view it in the browser.
+In order to run the web server. Open [https://localhost:5001/swagger](https://localhost:5001/swagger) to view it in the browser.
 
 ## Running the tests
 
